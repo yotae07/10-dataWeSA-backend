@@ -1,4 +1,4 @@
-from django.db import models
+from django.db    import models
 
 from daily.models import State
 
@@ -17,7 +17,7 @@ class Place(models.Model):
 class Mobility(models.Model):
     state      = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
     place      = models.ForeignKey(Place, on_delete=models.SET_NULL, null=True)
-    visit_rate = models.DecimalField(max_digits=10, decimal_places=2)
+    visit_rate = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

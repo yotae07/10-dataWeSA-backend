@@ -6,7 +6,7 @@ class EconomicStatus(models.Model):
     state                     = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
     is_deleted                = models.BooleanField(default=False)
     created_at                = models.DateTimeField(auto_now_add=True)
-    updated_at                = models.DateTimeField(anto_now=True)
+    updated_at                = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.state.name

@@ -1,6 +1,5 @@
 from django.http  import JsonResponse
 from django.views import View
-
 from .models      import (
     Bed,
     Icu
@@ -25,3 +24,4 @@ class IcuView(View):
             'result': item.total_per_capita
         }for item in icu_data.all()]
         return JsonResponse({'result': 'success', 'data': data})
+

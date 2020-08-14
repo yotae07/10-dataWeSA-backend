@@ -1,10 +1,10 @@
-iimport json
+import json
 
-from django.http import JsonResponse
+from django.http  import JsonResponse
 from django.views import View
 
 from daily.models import State
-from .models import (
+from .models      import (
     Place,
     Mobility
 )

@@ -16,5 +16,12 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('daily', include('daily.urls'))
+    path('daily', include('daily.urls')),
+    path('', include('cart.urls')),
+    path('', include('hospital.urls')),
+    path('', include('mobility.urls')),
+    path('user', include('user.urls')),
+    path('', include('product.urls')),
+    path('crawling', include('crawling.urls')),
+    path('total', include('total.urls'))
 ]

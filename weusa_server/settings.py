@@ -41,7 +41,12 @@ INSTALLED_APPS = [
     'daily',
     'economy',
     'hospital',
-    'mobility'
+    'mobility',
+    'crawling',
+    'cart',
+    'product',
+    'total',
+    'user'
 ]
 
 MIDDLEWARE = [

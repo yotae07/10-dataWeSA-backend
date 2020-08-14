@@ -15,13 +15,13 @@ class OrderView(View):
         try:
             data = json.loads(request.body)
             if data['item']:
-                for i in data['item']:
-                    if Order.objects.filter(user = request.user, product= Product.objects.get(id=i)).exists():
+                for state_id in data['item']:
+                    if Order.objects.filter(user = request.user, product= Product.objects.get(id=state_id)).exists():
                         pass
                     else:
                         Order.objects.create(
                             user = request.user,
-                            product = Product.objects.get(id=i)
+                            product = Product.objects.get(id=stae_id)
                         )
                 user_items = Order.objects.select_related('product').filter(id=request.user.id).order_by('product')
                 result = [

@@ -1,6 +1,7 @@
 import json
 import time
 import requests
+import re
 from django.db.models.functions import Now
 from django.http                import JsonResponse
 from bs4                        import BeautifulSoup
@@ -17,12 +18,15 @@ from hospital.models            import (
     Bed,
     Icu
 )
+from product.models             import (
+    Product
+)
 from mobility.models import Mobility, Place
 from total.models import Total
 
 class TotalCrawlingView(View):
     def get(self, request):
-        driver = webdriver.Chrome(r'C:\develop\server_project\esop_crawling\chromedriver.exe')
+        driver = webdriver.Chrome('/Users/tomleets/Downloads/chromedriver')
         driver.get('https://datausa.io/coronavirus')
         time.sleep(6)
         html = driver.page_source
@@ -106,7 +110,7 @@ class DailyCrawlingView(View):
 
 class ElementCrawlingView(View):
     def get(self, request):
-        driver = webdriver.Chrome(r'C:\develop\server_project\esop_crawling\chromedriver.exe')
+        driver = webdriver.Chrome('/Users/tomleets/Downloads/chromedriver')
         driver.get('https://datausa.io/coronavirus')
         time.sleep(6)
         html = driver.page_source
@@ -181,3 +185,49 @@ class HospitalCrawlingView(View):
             ).save()
 
         return JsonResponse({'result': "hospital_crawling_success", 'beds': bed_list, 'icu': icu_list}, status=200)
+
+class ProductCrawlingView(View):
+    def get(self, request):
+        crawling_url = "https://datausa.io/"
+        req = requests.get(crawling_url)
+        html = req.text
+        bs = BeautifulSoup(html, 'html.parser')
+
+        div_tag = bs.find('div', {'class': 'columns'})
+        div_list = div_tag.find_all('div', re.compile('column primary rank-*'))
+
+        for div in div_list:
+            image_list = div.find_all('a', re.compile('usa-*'))
+            if len(image_list) < 2:
+                abc = div.find_all('div', re.compile('usa-*'))
+                for aa in abc:
+                    img = aa.find('div', {'class': 'image'})
+                    tit = aa.find('div', {'class': 'title'})
+                    url = "None"
+                    title = tit.text
+                    image = 'https://datausa.io'+img['style'].split('(')[1][:-2]
+
+                    Product(
+                        name = title,
+                        image=image,
+                        url = url,
+                        is_deleted      =False,
+                        created_at      =Now(),
+                        updated_at      =Now()
+                    ).save()
+            for image in image_list:
+                url = 'https://datausa.io'+image['href']
+                img = image.find('div', {'class': 'image'})
+                tit = image.find('div', {'class': 'title'})
+                title = tit.text
+                image = 'https://datausa.io'+img['style'].split('(')[1][:-2]
+                
+                Product(
+                    name = title,
+                    image=image,
+                    url = url,
+                    is_deleted      =False,
+                    created_at      =Now(),
+                    updated_at      =Now()
+                ).save()
+        return JsonResponse({'result': "hospital_crawling_success"}, status=200)

@@ -20,6 +20,7 @@ class IcuView(View):
         icu_data = Icu.objects.select_related('state')
         data = [{
             'id'    : item.state.name,
+            'year'  : 2018,
             'total' : item.total,
             'result': item.total_per_capita
         }for item in icu_data.all()]

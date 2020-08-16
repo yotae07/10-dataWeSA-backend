@@ -21,7 +21,7 @@ class OrderView(View):
                     else:
                         Order.objects.create(
                             user = request.user,
-                            product = Product.objects.get(id=stae_id)
+                            product = Product.objects.get(id=state_id)
                         )
                 user_items = Order.objects.select_related('product').filter(id=request.user.id).order_by('product')
                 result = [

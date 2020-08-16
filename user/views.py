@@ -26,7 +26,7 @@ class KakaoSignIn(View):
 
             if User.objects.filter(user = str(user['id'])).exists():
                 user_info   = User.objects.get(user=str(user['id']))
-                encoded_jwt = jwt.encode({'id': user_info.id}, SECRET_KEY, ALGORITHM).docode('utf-8')
+                encoded_jwt = jwt.encode({'id': user_info.id}, SECRET_KEY, ALGORITHM).decode('utf-8')
 
                 return JsonResponse({'access_token' : encoded_jwt}, status = 200)            
             new_user_info = User(

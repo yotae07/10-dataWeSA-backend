@@ -45,6 +45,7 @@ class MobilityView(View):
                                     .values_list('visit_rate', flat=True)
                                 )
                         } for data in datas]
+                print(result)
                 return JsonResponse({'series': result}, status=200)
             return JsonResponse({'message': 'INVALID_REQUEST'}, status=401)
         except KeyError:
